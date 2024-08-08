@@ -1,4 +1,4 @@
-import { CameraControls, Environment, MeshPortalMaterial, RoundedBox, Text, useTexture } from '@react-three/drei'
+import { CameraControls, Environment, MeshPortalMaterial, RoundedBox, Stage, Text, useTexture } from '@react-three/drei'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import React, { useEffect, useRef, useState } from 'react'
 import * as Three from 'three'
@@ -6,17 +6,31 @@ import { Fish } from './Fish'
 import { Cactoro } from './Cactoro'
 import { Demon } from './Demon'
 import { easing } from 'maath'
+import { div } from 'three/examples/jsm/nodes/Nodes.js'
+import Loader from './Loader'
 
 const Experience = () => {
     const [active, setActive] = useState(null)
     const controlsRef = useRef()
-
+    const [loading,setLoading] = useState(true)
+useEffect(()=>{
+const timer =setTimeout(() => {
+    setLoading(false)
+}, 5000);
+return () => clearTimeout(timer)
+},[])
     return (
+    <div> 
+        {loading ? (<Loader/>):(
         <Canvas shadows camera={{ position: [0, 0, 10], fov: 30 }} style={{ height: "100vh" }}>
+
             <color attach="background" args={["#87CEEB"]} />
             <CameraControls maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 6} ref={controlsRef} />
-            <Scene active={active} setActive={setActive} controlsRef={controlsRef} />
-        </Canvas>
+            <Stage adjustCamera intensity={0.5} shadows="contact" >
+            <Scene castShadow active={active} setActive={setActive} controlsRef={controlsRef} />
+            </Stage>
+        </Canvas>)}
+    </div>
     )
 }
 
@@ -72,12 +86,12 @@ const Sphere = ({ children, hovered, setHovered, texture, name, color, active, s
                 <meshBasicMaterial color={color} toneMapped={false} />
             </Text>
             {/* tonemapped is used to get the exact color we are expecting */}
-            <RoundedBox onPointerOver={() => setHovered(name)} onPointerLeave={() => setHovered(null)} onDoubleClick={() => setActive(active === name ? null : name)} args={[2, 3, 0.1]} name={name}>
+            <RoundedBox castShadow onPointerOver={() => setHovered(name)} onPointerLeave={() => setHovered(null)} onDoubleClick={() => setActive(active === name ? null : name)} args={[2, 3, 0.1]} name={name}>
                 <MeshPortalMaterial
                     ref={portalMaterial}
                     side={Three.DoubleSide}>
                     <Environment preset='sunset' />
-                    <ambientLight intensity={1.5} />
+                    <ambientLight  intensity={2.5} />
                     {children}
                     <mesh>
                         <sphereGeometry args={[6, 64, 64]} />
