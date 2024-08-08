@@ -1,3 +1,3 @@
 # React + Vite
 
-![image](https://github.com/Danyal494/3D-obj-folder/assets/167676132/f3d724ff-7f35-4e6e-aeff-bb818acae6af)
+![image](https://github.com/user-attachments/assets/0df35f26-0870-4a52-b303-56bf8556f5b3)
