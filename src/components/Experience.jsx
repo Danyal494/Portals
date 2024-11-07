@@ -1,6 +1,6 @@
 import { CameraControls, Environment, MeshPortalMaterial, RoundedBox, Stage, Text, useTexture } from '@react-three/drei'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Suspense, useEffect, useRef, useState } from 'react'
 import * as Three from 'three'
 import { Fish } from './Fish'
 import { Cactoro } from './Cactoro'
@@ -22,6 +22,8 @@ return () => clearTimeout(timer)
     return (
     <div> 
         {loading ? (<Loader/>):(
+            <Suspense fallback={<Loader/>}>
+
         <Canvas shadows camera={{ position: [0, 0, 10], fov: 30 }} style={{ height: "100vh" }}>
 
             <color attach="background" args={["#87CEEB"]} />
@@ -29,7 +31,9 @@ return () => clearTimeout(timer)
             <Stage adjustCamera intensity={0.5} shadows="contact" >
             <Scene castShadow active={active} setActive={setActive} controlsRef={controlsRef} />
             </Stage>
-        </Canvas>)}
+        </Canvas>
+        </Suspense>
+        )}
     </div>
     )
 }
